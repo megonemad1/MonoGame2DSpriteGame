@@ -122,6 +122,15 @@ namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Spri
                 LookAtPoint(new Vector2(MouseState.X, MouseState.Y));
 
             }
+           if (K.IsKeyDown(Keys.H))
+           {
+               Damage = 0;
+           }
+            
+            if (K.IsKeyDown(Keys.Enter))
+            {
+                Damage+=0.1f;
+            }
            
             if(GunCoolDown.X<=0&&K.IsKeyDown(Keys.E))
             {

@@ -46,12 +46,14 @@ namespace Atempt_5
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
+        bool Firework;
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
 
             base.Initialize();
             Console.WriteLine("Game Init");
+            
             int bufferY = Window.ClientBounds.Height / 20;
             int bufferX = Window.ClientBounds.Width / 20;
             GameRegion = new Rectangle(bufferX, bufferY, Window.ClientBounds.Width - (2 * bufferX), Window.ClientBounds.Height - (2 * bufferY) - 100);
@@ -61,11 +63,11 @@ namespace Atempt_5
             Sprite.Sprite.Entitys.Add(PlayerHelthbar);
             player = new SpritePlayer(new Vector2(0, 0), null, Color.White, 0f, null, 1f, SpriteEffects.None, 0.5f, 20f, 4, 4, PlayerHelthbar);
             Sprite.Sprite.Entitys.Add(player as Sprite.Sprite);
-             HealthBar MobHelthbar = new HealthBar(new Vector2(GameRegion.Left, GameRegion.Bottom + 50), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            // HealthBar MobHelthbar = new HealthBar(new Vector2(GameRegion.Left, GameRegion.Bottom + 50), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
             
-           MobHelthbar.defaultFrameRefrenceY = 4;
+         //  MobHelthbar.defaultFrameRefrenceY = 4;
             
-          Sprite.Sprite.Entitys.Add(new MobShip(new Vector2(Game1.GameRegion.Width,GameRegion.Height),null,Color.Red,0,null,0.6f, SpriteEffects.None,0.5f,20));
+        //  Sprite.Sprite.Entitys.Add(new MobShip(new Vector2(Game1.GameRegion.Width,GameRegion.Height),null,Color.Red,0,null,0.6f, SpriteEffects.None,0.5f,20));
             }
 
         /// <summary>
@@ -136,7 +138,7 @@ namespace Atempt_5
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         /// 
-
+Random R = new Random();
         protected override void Update(GameTime gameTime)
         {
             KeyboardState K = Keyboard.GetState();
@@ -150,7 +152,15 @@ namespace Atempt_5
 
             }
 
-
+if (Keyboard.GetState().IsKeyDown(Keys.J))
+{
+    Firework = !Firework;
+}
+            if(Firework)
+            {
+                
+                Sprite.Sprite.Entitys.Add(new Explosion(new Vector2(R.Next(Window.ClientBounds.Width), R.Next(Window.ClientBounds.Height)), null, new Color(R.Next(255),R.Next(255),R.Next(255)), 0, null, 0.2f, SpriteEffects.None, 1));
+            }
 
             base.Update(gameTime);
         }
