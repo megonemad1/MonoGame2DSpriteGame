@@ -1,13 +1,13 @@
-﻿using Atempt_5.Sprite.SpriteSheet.Effect;
+﻿using Atempt_5.Drawable.SpriteSheet.Effect;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Atempt_5.Sprite.SpriteSheet.Gui;
+using Atempt_5.Drawable.SpriteSheet.Gui;
 using Microsoft.Xna.Framework;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
 {
     class MobShip : Mob
     {
@@ -98,7 +98,7 @@ namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
                     LookAtPoint(Game1.player as Sprite);
                     if (GunCoolDown.X < 0)
                     {
-                        Entitys.Add(new Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(20 * Math.Cos(rotation)), 20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
+                        Entitys.Add(new Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(20 * Math.Cos(rotation)), 20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
                         GunCoolDown.X = 5;
                     }
                     HasTask = false;
@@ -108,7 +108,7 @@ namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
                     LookAtPoint(Game1.player as Sprite);
                     if (GunCoolDown.Y < 0)
                     {
-                        Entitys.Add(new Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(-20 * Math.Cos(rotation)), -20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
+                        Entitys.Add(new Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(-20 * Math.Cos(rotation)), -20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
                         GunCoolDown.Y = 5;
                     }
                     HasTask = false;

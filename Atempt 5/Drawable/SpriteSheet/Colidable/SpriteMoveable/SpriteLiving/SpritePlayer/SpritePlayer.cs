@@ -1,4 +1,4 @@
-﻿using Atempt_5.Sprite.SpriteSheet.Gui;
+﻿using Atempt_5.Drawable.SpriteSheet.Gui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Atempt_5.Sprite.SpriteSheet.Effect;
+using Atempt_5.Drawable.SpriteSheet.Effect;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.SpritePlayer
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.SpritePlayer
 {
     class SpritePlayer : SpriteLiving
     {    
@@ -21,7 +21,7 @@ namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Spri
         {
             get { return defaultAnimationFrames; }
         }
-        public static void SetTexture(Texture2D T)
+        public static void SetTexture(string Key,Texture2D T)
         {
             tTexture = T;
 
@@ -134,12 +134,12 @@ namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Spri
            
             if(GunCoolDown.X<=0&&K.IsKeyDown(Keys.E))
             {
-                Entitys.Add(new Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position+new Vector2((float)(20*Math.Cos(rotation)),20*(float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
+                Entitys.Add(new Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position+new Vector2((float)(20*Math.Cos(rotation)),20*(float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
                 GunCoolDown.X = 2;
             }
             if (K.IsKeyDown(Keys.Q) && GunCoolDown.Y <= 0)
             {
-                Entitys.Add(new Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(-20 * Math.Cos(rotation)), -20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
+                Entitys.Add(new Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical.ammo.Lazer.Lazer(this.position + new Vector2((float)(-20 * Math.Cos(rotation)), -20 * (float)Math.Sin(rotation)), null, Color.White, this.rotation, null, 1f, effect, 0.5f,this));
                 GunCoolDown.Y = 2;
             }
             if(GunCoolDown.X>0)

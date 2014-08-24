@@ -1,0 +1,2 @@
+﻿Create SpriteFont Encapsulation
+{re-create the sprite class but with sprite font in mind}

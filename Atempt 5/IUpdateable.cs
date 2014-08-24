@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Atempt_5
 {
-    class GameSettings
-    {public static string ContentPath = @"Content\";
+  public interface IUpdateable
+    {
+         void Update(Microsoft.Xna.Framework.GameTime gameTime, Game1 game1);
     }
 }

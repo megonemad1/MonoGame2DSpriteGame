@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable
 {
   abstract  class SpriteMoveable:SpriteColidable
     {

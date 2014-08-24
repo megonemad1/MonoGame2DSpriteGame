@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving.Mob
 {
     abstract class Mob : SpriteLiving
     {

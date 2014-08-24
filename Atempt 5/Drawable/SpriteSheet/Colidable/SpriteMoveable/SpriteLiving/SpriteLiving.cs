@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteLiving
 {
   abstract  class SpriteLiving:SpriteMoveable
     {private float clife;

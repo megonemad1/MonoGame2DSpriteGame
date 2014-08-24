@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Atempt_5.Sprite.SpriteSheet.Gui
+namespace Atempt_5.Drawable.SpriteSheet.Gui
 {
     class HealthBar : SpriteSheet
     {

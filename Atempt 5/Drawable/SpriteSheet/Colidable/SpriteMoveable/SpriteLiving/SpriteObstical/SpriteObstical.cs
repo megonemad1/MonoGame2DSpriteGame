@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Atempt_5.Sprite.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical
+namespace Atempt_5.Drawable.SpriteSheet.Colidable.SpriteMoveable.SpriteObstical
 {
  abstract   class SpriteObstical:SpriteMoveable
     {
