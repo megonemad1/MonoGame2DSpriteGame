@@ -39,6 +39,15 @@ namespace Atempt_5
           return  new Rectangle((int)Frame.X, (int)Frame.Y, TW / SW, TH / SH);
 
       }
+      public Microsoft.Xna.Framework.Rectangle CreateRectangle(Vector2 Frame, Game1 game)
+      {
+          int TH = Texture.Height;
+          int TW = Texture.Width;
+          int SH = game.SpriteSheetHeights[TextureKey];
+          int SW = game.SpriteSheetWidths[TextureKey];
+          return new Rectangle((int)Frame.X, (int)Frame.Y, TW / SW, TH / SH);
+
+      }
         public void Draw(SpriteBatch SB)
         {
             if (Texture != null)
@@ -68,9 +77,10 @@ namespace Atempt_5
             scale = 1f;
             effect = SpriteEffects.None;
             Texture = game.TextureBank[textureKey];
-            window.DrawableTextures.Add(SpriteID.ToString(), this);
+            TextureKey = textureKey;
+          //  window.DrawableTextures.Add(SpriteID.ToString(), this);
         }
-
+        string TextureKey;
         public Texture2D Texture;
         public Microsoft.Xna.Framework.Vector2 position;
         public Microsoft.Xna.Framework.Color hue;

@@ -77,10 +77,16 @@ namespace Atempt_5
             base.Initialize();
             Console.WriteLine("Game Init");
             
+            ///Play Window Inint
             {
                 GameState SustainVal = GameState.Play;
                 Windows[SustainVal] = new GameWindow(this, SustainVal);
-                Windows[SustainVal].Updatable.Add("player1", new Ship(new Vector2(20, 20), 0.5f, "ship", this));
+
+                var ShipSprite = new SpriteTexture("Ship",new Vector2(20, 20),0.5f, this, Windows[SustainVal]);
+                Windows[SustainVal].DrawableTextures.Add("Player1",ShipSprite);
+                Windows[SustainVal].Updatable.Add("Player1", new Ship(ShipSprite,this));
+
+
                 Windows[SustainVal].Updatable.Add("Curser", new Curser("Curser", this));
 
             }

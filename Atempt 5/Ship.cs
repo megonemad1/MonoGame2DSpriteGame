@@ -18,15 +18,14 @@ namespace Atempt_5
        Vector2 Velocity= new Vector2(0,0);
        
         
-        public Ship(Vector2 pos, float depth,string textureKey, Game1 game, GameWindow window)
+        public Ship(SpriteTexture ShipSprite,Game1 game)
         {
-            ShipSprite = new SpriteTexture(textureKey,pos, depth, game, window);
-           
-         var rec = SpriteTexture.CreateRectangle(new Vector2(0, 0), textureKey, game);
+         this.ShipSprite = ShipSprite;
+         var rec = ShipSprite.CreateRectangle(new Vector2(0, 0),game);              
          ShipSprite.srcrectangle = rec;
          ShipSprite.origin = new Vector2((float)(rec.X * rec.Width + rec.Width / 2), (float)(rec.Y * rec.Height + rec.Height / 2));
-        
-
+         
+         //window.Updatable.Add(Name,this);
         }
         
         public void Update(Microsoft.Xna.Framework.GameTime gameTime, Game1 game1)
