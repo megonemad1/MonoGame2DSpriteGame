@@ -7,23 +7,23 @@ using System.Text;
 
 namespace Atempt_5
 {
-    class Ship:IUpdateable
+    class Player1Ship:IUpdateable
     {
 
        SpriteTexture ShipSprite;
        float TopSpeed= 5;
        float Acceleration = 0.1f;
-       float Deceleration = 0.01f;
+       float Deceleration = 0.05f;
       // float RotationSpeed = 0.1f;
        Vector2 Velocity= new Vector2(0,0);
        
         
-        public Ship(SpriteTexture ShipSprite,Game1 game)
+        public Player1Ship(SpriteTexture ShipSprite,Game1 game)
         {
          this.ShipSprite = ShipSprite;
-         var rec = ShipSprite.CreateRectangle(new Vector2(0, 0),game);              
-         ShipSprite.srcrectangle = rec;
-         ShipSprite.origin = new Vector2((float)(rec.X * rec.Width + rec.Width / 2), (float)(rec.Y * rec.Height + rec.Height / 2));
+        // var rec = ShipSprite.CreateRectangle(new Vector2(0, 0));              
+        // ShipSprite.srcrectangle = rec;
+         // ShipSprite.origin = 
          
          //window.Updatable.Add(Name,this);
         }

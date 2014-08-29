@@ -55,7 +55,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Curser.cs" />
-    <Compile Include="GameWindow.cs" />
+    <Compile Include="GameWindows\GameWindow.cs" />
+    <Compile Include="GameWindows\PauseWindow.cs" />
+    <Compile Include="GameWindows\PlayWindow.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="IUpdateable.cs" />
     <Compile Include="Ship.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="GameSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpriteSheets.cs" />
     <Compile Include="SpriteText.cs" />
     <Compile Include="SpriteTexture.cs" />
   </ItemGroup>

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Atempt_5
 {
-    class SpriteText:IDrawable
+  public class SpriteText:IDrawable
     {
         public SpriteFont font;
         public Vector2 position;

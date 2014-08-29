@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Atempt_5.GameWindows;
 
 
 #endregion
@@ -32,24 +33,23 @@ namespace Atempt_5
             else
                 return FreeID.Pop();//there are preownd keys so use the last one of them
         }
-        #endregion
 
-        public Dictionary<GameState, GameWindow> Windows;
+        public void ReturnKey(int Key)
+        {
+            FreeID.Push(Key); 
+        }
+
+        #endregion
+        #region GameWindows
+        public Dictionary<GameState, GameWindow> GameWindows;
+        #endregion
+        #region FontBank
         public Dictionary<string, SpriteFont> FontBank;
-        SpriteFont SP;
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------
-        //Make Hight/width a vector or a size thus consolidating 
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------
-        #region TextureBank
-        public Dictionary<string, Texture2D> TextureBank { get { return textureBank; } set { textureBank = value; } }
-        Dictionary<string, Texture2D> textureBank;
-
-        public Dictionary<string, int> SpriteSheetHeights { get { return textureHeights; } set { textureHeights = value; } }
-        Dictionary<string, int> textureHeights;
-
-        public Dictionary<string, int> SpriteSheetWidths { get { return textureWidths; } set { textureWidths = value; } }
-        Dictionary<string, int> textureWidths;
         #endregion
+        #region TextureBank
+        Dictionary<string, SpriteSheet> TextureBank;
+        #endregion
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -71,27 +71,51 @@ namespace Atempt_5
         {
 
             // TODO: Add your initialization logic here
-
-            gameState = GameState.Play;
-            graphics.IsFullScreen = true;
-            base.Initialize();
             Console.WriteLine("Game Init");
+            base.Initialize();
+            gameState = GameState.Menu;
+            graphics.IsFullScreen = true;
+
+            PlayWindowInint();
+            PauseWindowInit();
+            MenuWindowInit();
             
-            ///Play Window Inint
+           
+
+
+           
+        }
+
+        private void MenuWindowInit()
+        {
+            GameWindows[GameState.Menu] = new GameWindow().setGameState(GameState.Menu);
+        }
+
+        private void PauseWindowInit()
+        {
+            GameWindows[GameState.Pause] = new PauseWindow().setGameState(GameState.Pause);
+        }
+        private void PlayWindowInint()
+        {
+
+            GameState SustainVal = GameState.Play;
             {
-                GameState SustainVal = GameState.Play;
-                Windows[SustainVal] = new GameWindow(this, SustainVal);
+                GameWindows[SustainVal] = new GameWindow().setGameState(SustainVal);
 
-                var ShipSprite = new SpriteTexture("Ship",new Vector2(20, 20),0.5f, this, Windows[SustainVal]);
-                Windows[SustainVal].DrawableTextures.Add("Player1",ShipSprite);
-                Windows[SustainVal].Updatable.Add("Player1", new Ship(ShipSprite,this));
+                var ShipSprite = new SpriteTexture(GetNewKey(), TextureBank["ship"].texture, TextureBank["ship"].SpriteSheetSize).SetDefaultRectangle(new Vector2(0, 0)).SetOrigenCenter();
+                string Key = "Player1Ship";
+                GameWindows[SustainVal].DrawableTextures.Add(Key, ShipSprite);
+                GameWindows[SustainVal].Updatable.Add(Key, new Player1Ship(ShipSprite, this));
+            }
 
-
-                Windows[SustainVal].Updatable.Add("Curser", new Curser("Curser", this));
+            {
+                string Key = "Curser";
+                SpriteTexture CurserTexture = new SpriteTexture(GetNewKey(), TextureBank[Key].texture, TextureBank[Key].SpriteSheetSize).SetOrigenCenter().SetDepth(1f);
+                GameWindows[SustainVal].DrawableTextures.Add(Key, CurserTexture);
+                GameWindows[SustainVal].Updatable.Add(Key, new Curser(CurserTexture));
 
             }
         }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -109,108 +133,57 @@ namespace Atempt_5
         {
             Console.WriteLine("Game Loading");
             // Create a new SpriteBatch, which can be used to draw textures.
-            SP = Content.Load<SpriteFont>("Main Font");//---------------------------------------------------
-            TextureBank = new Dictionary<string, Texture2D>();
-            SpriteSheetHeights = new Dictionary<string, int>();
-            SpriteSheetWidths = new Dictionary<string, int>();
+            
+            GameWindows = new Dictionary<GameState, GameWindow>();
+            TextureBank = new Dictionary<string,SpriteSheet>();
+          
+
             FontBank = new Dictionary<string, SpriteFont>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            //////Image Textures
             #region Curser
-            try
-            {
-                string Key = "Curser";
-                Console.WriteLine("loading " + Key);
-                setSpriteHeight(Key, 1);
-                setSpriteWidth(Key, 1);
-                SetTexture(Key, Content.Load<Texture2D>(@"Curser"));
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            LoadTexture("Curser", 11, 1, "Curser");
             #endregion
-
             #region Ship
-
-            try
-            {
-                string Key = "ship";
-                Console.WriteLine("loading " + Key);
-                setSpriteHeight(Key, 4);
-                setSpriteWidth(Key, 4);
-                SetTexture(Key, Content.Load<Texture2D>(@"ship4_4"));
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                LoadTexture("ship", 4, 4, "ship4_4");
             #endregion
             #region HealthBar
-
-            try
-            {
-                string Key = "HealthBar";
-                Console.WriteLine("loading " + Key);
-                setSpriteWidth(Key, 1);
-                setSpriteHeight(Key, 5);
-                SetTexture(Key, LoadTextureFromContent("HealthBar1_5"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            LoadTexture("HealthBar",1,5,"HealthBar1_5");
             #endregion
             #region explotion
-
-            try
-            {
-                string Key = "Explotion";
-                Console.WriteLine("loading " + Key);
-                setSpriteWidth(Key, 10);
-                setSpriteHeight(Key, 1);
-                SetTexture(Key, LoadTextureFromContent("Explotion10_1"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            LoadTexture("Explotion", 10, 1, "Explotion10_1");
             #endregion
             #region Lazer
+            LoadTexture("LazerBall", 1, 4, "LazerBall1_4");
+            #endregion
+
+            //////Font Textures
+            #region Main Font
+            FontBank.Add("Main Font",Content.Load<SpriteFont>("Main Font"));//---------------------------------------------------
+            #endregion 
+
+           
+        }
+
+        private void LoadTexture(string Key, int x, int y, string textureName)
+        {
             try
             {
-                string Key = "LazerBall";
                 Console.WriteLine("loading " + Key);
-                setSpriteWidth(Key, 1);
-                setSpriteHeight(Key, 4);
-                SetTexture(Key, LoadTextureFromContent("LazerBall1_4"));
+                TextureBank.Add(Key, new SpriteSheet(Content.Load<Texture2D>(textureName), x, y));
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            #endregion
-
-
-
-            // TODO: use this.Content to load your game content here
         }
 
-        private void SetTexture(string Key, Texture2D texture2D)
-        {
-            TextureBank.Add(Key, texture2D);
-        }
+      
 
-        private void setSpriteWidth(string Key, int p)
-        {
-            SpriteSheetWidths.Add(Key, p);
-        }
 
-        private void setSpriteHeight(string Key, int p)
-        {
-            SpriteSheetHeights.Add(Key, p);
-        }
+
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -231,47 +204,25 @@ namespace Atempt_5
         Random R = new Random();
         protected override void Update(GameTime gameTime)
         {
-            switch (this.gameState)
+
+            foreach (KeyValuePair<string, IUpdateable> U in GameWindows[gameState].Updatable)
             {
-                case GameState.GameInit: InGameInit(gameTime);
-                    break;
-                case GameState.Play: InGameUpdate(gameTime);
-                    break;
-                case GameState.Pause: InGamePause(gameTime);
-                    break;
-                case GameState.Menu: InGameMainMenu(gameTime);
-                    break;
-                default: Console.WriteLine("Game State Dosn't exsist in update");
-                    Console.ReadLine();
-                    break;
+                U.Value.Update(gameTime, this);
+            }
+
+            if (Keyboard.GetState().IsKeyDown( Keys.P))
+            {
+                gameState = GameState.Play;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.O))
+            {
+                gameState = GameState.Pause;
             }
 
             base.Update(gameTime);
         }
 
-        private void InGameMainMenu(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void InGamePause(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void InGameUpdate(GameTime gameTime)
-        {
-            foreach (KeyValuePair<string, IUpdateable> U in Windows[GameState.Play].Updatable)
-            {
-                U.Value.Update(gameTime, this);
-            }
-        }
-
-        private void InGameInit(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
+      
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -285,10 +236,11 @@ namespace Atempt_5
             // TODO: Add your drawing code here
 
 
-            foreach (KeyValuePair<string, IDrawable> S in Windows[GameState.Play].DrawableTextures)
+            foreach (KeyValuePair<string, IDrawable> S in GameWindows[gameState].DrawableTextures)
             {
                 S.Value.Draw(spriteBatch);
             }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

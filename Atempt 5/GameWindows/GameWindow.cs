@@ -17,14 +17,19 @@ namespace Atempt_5
         GameState name;
      
 
-       public GameWindow(Game1 game,GameState name)
+       public GameWindow()
         {
             Updatable = new Dictionary<string, IUpdateable>();
             DrawableTextures = new Dictionary<string, IDrawable>();
             DrawableFont = new Dictionary<string, SpriteText>();
-            this.name = name;
+            Console.WriteLine("test2");
         }
-       public bool Update(GameTime gameTime, Game1 game)
+       public GameWindow setGameState(GameState name)
+       {
+           this.name = name;
+           return this;
+       }
+       public virtual bool Update(GameTime gameTime, Game1 game)
        {
            try
            {
@@ -41,7 +46,7 @@ namespace Atempt_5
            }
        }
 
-      public bool Draw(SpriteBatch SB)
+      public virtual bool Draw(SpriteBatch SB)
        {
           try
           {
