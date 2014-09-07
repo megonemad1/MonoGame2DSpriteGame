@@ -8,22 +8,17 @@ using System.Text;
 
 namespace Atempt_5.GameWindows
 {
-    class PauseWindow : GameWindow
+    class MenuWindow:GameWindow
     {
-        public PauseWindow()
+        public MenuWindow()
         {
+
         }
-        
+
         public override bool Update(GameTime gameTime, GameCore game)
         {
-            if (game.CurrentKeyState(Keys.P) == KeyEventStates.RisingEdge)
-            {
-                game.gameState = GameState.Play;
-            }
-
-           
+         
             return base.Update(gameTime, game);
-
         }
 
         public override bool Draw(SpriteBatch SB)

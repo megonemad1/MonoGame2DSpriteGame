@@ -7,6 +7,6 @@ namespace Atempt_5
 {
   public interface IUpdateable
     {
-         void Update(Microsoft.Xna.Framework.GameTime gameTime, Game1 game1);
+         void Update(Microsoft.Xna.Framework.GameTime gameTime, GameCore game1);
     }
 }

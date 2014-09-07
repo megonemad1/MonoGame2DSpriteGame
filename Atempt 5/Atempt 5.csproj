@@ -56,12 +56,14 @@
   <ItemGroup>
     <Compile Include="Curser.cs" />
     <Compile Include="GameWindows\GameWindow.cs" />
+    <Compile Include="GameWindows\MenuWindow.cs" />
     <Compile Include="GameWindows\PauseWindow.cs" />
     <Compile Include="GameWindows\PlayWindow.cs" />
+    <Compile Include="IColideable.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="IUpdateable.cs" />
     <Compile Include="Ship.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="GameCore.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,6 +124,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextContent\TextContent\TextContent.csproj">
+      <Project>{1fcef765-d5d6-47e3-a0d8-2a94e88d162d}</Project>
+      <Name>TextContent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

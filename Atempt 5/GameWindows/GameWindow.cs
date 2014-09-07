@@ -13,6 +13,8 @@ namespace Atempt_5
         public Dictionary<string, IUpdateable> Updatable;
         public Dictionary<string, IDrawable> DrawableTextures;
         public Dictionary<string, SpriteText> DrawableFont;
+        public Dictionary<string, IColideable> Colideable;
+
         public Rectangle? GameRegion;
         GameState name;
      
@@ -22,15 +24,16 @@ namespace Atempt_5
             Updatable = new Dictionary<string, IUpdateable>();
             DrawableTextures = new Dictionary<string, IDrawable>();
             DrawableFont = new Dictionary<string, SpriteText>();
-            Console.WriteLine("test2");
+            Colideable = new Dictionary<string, IColideable>();
         }
        public GameWindow setGameState(GameState name)
        {
            this.name = name;
            return this;
        }
-       public virtual bool Update(GameTime gameTime, Game1 game)
+       public virtual bool Update(GameTime gameTime, GameCore game)
        {
+           
            try
            {
                foreach (KeyValuePair<string,IUpdateable> U in Updatable)
@@ -50,14 +53,18 @@ namespace Atempt_5
        {
           try
           {
+             SB.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
               foreach (KeyValuePair<string,IDrawable> D in DrawableTextures)
               {
                   D.Value.Draw(SB);
               }
+              SB.End();
+              SB.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
               foreach(KeyValuePair<string,SpriteText> S in DrawableFont)
               {
                   S.Value.Draw(SB);
               }
+              SB.End();
               return true;
           }
           catch (Exception e)

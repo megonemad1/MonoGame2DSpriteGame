@@ -20,7 +20,7 @@ namespace Atempt_5
         //curser.scale = 0.5f;
        
         }
-       public void Update(GameTime gameTime, Game1 game1)
+       public void Update(GameTime gameTime, GameCore game1)
         {
           var mouse= Mouse.GetState();
           curser.position = new Vector2(mouse.X, mouse.Y);

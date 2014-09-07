@@ -2,11 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Atempt_5.GameWindows
 {
-    class PlayWindow
+    class PlayWindow: GameWindow
     {
+       public PlayWindow()
+        {
 
+        }
+
+
+       public override bool Update(GameTime gameTime, GameCore game)
+       { bool runthrough=  base.Update(gameTime, game);
+           Keyboard.GetState().GetPressedKeys();
+           
+           if(game.CurrentKeyState(Keys.P)== KeyEventStates.RisingEdge)
+           {
+               game.gameState = GameState.Pause;
+           }
+            return runthrough;
+         
+       }
+
+       public override bool Draw(SpriteBatch SB)
+       {
+           return base.Draw(SB);
+       }
     }
 }

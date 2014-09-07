@@ -24,23 +24,41 @@ namespace Atempt_5
         {
             SB.DrawString(font, DspText, position, hue, rotation, origin, scale, effect, Depth);
         }
-
-        public SpriteText(string FontKey, Microsoft.Xna.Framework.Vector2 position, float Depth, Game1 game,GameWindow window)
+      public  float TextHeight { get { return font.MeasureString(DspText).Y; } }
+     public   float TextWidth { get { return font.MeasureString(DspText).X; } }
+     public Vector2 TextSize { get { return font.MeasureString(DspText); } }
+        public SpriteText(SpriteFont font)
         {
-            font = game.FontBank[FontKey];
-            this.position = position;
+            this.font = font;
+            this.position = new Vector2(0, 0);
             hue = Color.White;
             rotation = 0f;
             origin = new Vector2(0, 0);
             scale = 1f;
             effect = SpriteEffects.None;
-            SpriteID = game.GetNewKey();
-            this.Depth = Depth;
+            this.Depth = 0.5f;
         }
 
         public SpriteText SetText(string Text)
         {
             DspText = Text;
+            return this;
+        }
+        public SpriteText SetPos(Vector2 Pos)
+        {
+            this.position = Pos;
+            return this;
+        }
+
+        internal SpriteText SetOrigen(Vector2 vector2)
+        {
+            this.origin = vector2;
+            return this;
+        }
+
+        internal SpriteText SetOrigen()
+        {
+            SetOrigen(TextSize / 2);
             return this;
         }
     }

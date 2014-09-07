@@ -19,7 +19,7 @@ namespace Atempt_5
         static void Main()
         {
             Console.WriteLine("Game Start");
-            using (var game = new Game1())
+            using (var game = new GameCore())
                 game.Run();
         }
       
