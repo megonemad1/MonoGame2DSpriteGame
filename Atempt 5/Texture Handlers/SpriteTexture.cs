@@ -9,27 +9,7 @@ namespace Atempt_5
 {
     public class SpriteTexture : IDrawable
     {
-        public static float LookAtPoint(Vector2 Start, Vector2 Target)
-        {
-            float rotation = 0;
-            Vector2 Tpoint = Target - Start;
-            if (Tpoint.Y != 0)
-            {
-                rotation = (float)Math.Atan(-1 * Tpoint.X / Tpoint.Y);
-                if (Tpoint.Y > 0)
-                    rotation += (float)Math.PI;
-            }
-            else
-            {
-                if (Tpoint.X < 0)
-                    rotation = 0.5f * (float)Math.PI;
-                else
-                    if (Tpoint.X > 0)
-                        rotation = 1.5f * (float)Math.PI;
-
-            }
-            return rotation;
-        }
+  
         public static Microsoft.Xna.Framework.Rectangle CreateRectangle(Vector2 Frame, Texture2D texture, Vector2 SpriteSheetSize)
         {
             int TH = texture.Height;
@@ -69,6 +49,7 @@ namespace Atempt_5
                 Console.WriteLine("texture " + SpriteID + " is null");
 
             }
+            
         }
         public SpriteTexture(int SpriteID, Texture2D texture, Vector2 SpriteHW)
         {
@@ -83,7 +64,6 @@ namespace Atempt_5
             effect = SpriteEffects.None;
             Texture = texture;
             this.SpriteWH = SpriteHW;
-            //  window.DrawableTextures.Add(SpriteID.ToString(), this);
         }
         public SpriteTexture SetDepth(float Depth)
         {

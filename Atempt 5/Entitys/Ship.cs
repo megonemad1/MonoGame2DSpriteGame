@@ -9,43 +9,52 @@ namespace Atempt_5
 {
     class Player1Ship : IUpdateable, IColideable
     {
+        #region Variables
         public Vector2 Pos { get { return ShipSprite.position; } }
         SpriteText SpriteName;
-
-        public float Radius
-        {
-            get
-            {
-                if (ShipSprite.srcrectangle.HasValue)
-                    return (float)Math.Sqrt(ShipSprite.srcrectangle.Value.Height + ShipSprite.srcrectangle.Value.Width);
-                else
-                    return (float)Math.Sqrt(ShipSprite.Texture.Height + ShipSprite.Texture.Width);
-            }
-        }
         SpriteTexture ShipSprite;
         float TopSpeed = 5;
         float Acceleration = 0.1f;
         float Deceleration = 0.05f;
-        // float RotationSpeed = 0.1f;
         Vector2 Velocity = new Vector2(0, 0);
 
+                #region Propertys
+                public float Radius
+                {
+                    get
+                    {
+                        if (ShipSprite.srcrectangle.HasValue)
+                            return (float)Math.Sqrt(ShipSprite.srcrectangle.Value.Height + ShipSprite.srcrectangle.Value.Width);
+                        else
+                            return (float)Math.Sqrt(ShipSprite.Texture.Height + ShipSprite.Texture.Width);
+                    }
+                }
+                #endregion
 
+        #endregion
+
+
+        #region Constructor
+                /// <summary>
+        /// Constructor, requires the texture for the ship and the font it will use
+        /// </summary>
+        /// <param name="ShipSprite"></param>
+        /// <param name="Name"></param>
         public Player1Ship(SpriteTexture ShipSprite, SpriteText Name)
         {
             this.ShipSprite = ShipSprite;
             SpriteName = Name.SetText("Player");
-            // var rec = ShipSprite.CreateRectangle(new Vector2(0, 0));              
-            // ShipSprite.srcrectangle = rec;
-            // ShipSprite.origin = 
 
-            //window.Updatable.Add(Name,this);
         }
+                #endregion
 
+
+        #region update
         public void Update(Microsoft.Xna.Framework.GameTime gameTime, GameCore game1)
         {
-            var keys = Keyboard.GetState();
+            #region Movement
             bool movingY = false;
-            if (keys.IsKeyDown(Keys.W))
+            if (game1.CurrentKeyState(Keys.W)!= KeyEventStates.Up)
             {
                 var movement = new Vector2((float)(-Acceleration * Math.Sin(ShipSprite.rotation)), (float)(Acceleration * Math.Cos(ShipSprite.rotation)));
                 if ((Velocity - movement).Length() < TopSpeed)
@@ -58,7 +67,7 @@ namespace Atempt_5
                 }
                 movingY = true;
             }
-            if (keys.IsKeyDown(Keys.S))
+            if (game1.CurrentKeyState(Keys.S) != KeyEventStates.Up)
             {
                 var movement = new Vector2((float)(-Acceleration * Math.Sin(ShipSprite.rotation)), (float)(Acceleration * Math.Cos(ShipSprite.rotation)));
                 if ((Velocity + movement).Length() < TopSpeed)
@@ -72,22 +81,14 @@ namespace Atempt_5
                 movingY = true;
             }
 
-            SpriteName.position = Pos - new Vector2(ShipSprite.origin.X/2,ShipSprite.origin.Y) - SpriteName.TextSize+ new Vector2(SpriteName.TextWidth/2,0);
-            
-            
-            //if (keys.IsKeyDown(Keys.D))
-            //{
-            //    ShipSprite.rotation += RotationSpeed;
-
-            //}
-            //if (keys.IsKeyDown(Keys.A))
-            //{
-            //    ShipSprite.rotation -= RotationSpeed;
-
-            //}
-            ShipSprite.rotation = SpriteTexture.LookAtPoint(ShipSprite.position, new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y));
-
+            SpriteName.position = Pos - new Vector2(ShipSprite.origin.X / 2, ShipSprite.origin.Y) - SpriteName.TextSize + new Vector2(SpriteName.TextWidth / 2, 0);
             ShipSprite.position += Velocity;
+            #endregion
+            #region rotation
+            ShipSprite.rotation = LibTranslation.LookAtPoint(ShipSprite.position, new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y));
+            #endregion
+
+            #region Drag
             if (Velocity.Y != 0 && !movingY)
             {
                 if (Velocity.Y > 0)
@@ -111,9 +112,9 @@ namespace Atempt_5
                 }
             }
         }
+            #endregion
 
-
-
+        #endregion
 
 
     }

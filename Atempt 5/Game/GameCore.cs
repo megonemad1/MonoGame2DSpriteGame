@@ -16,6 +16,7 @@ using Atempt_5.GameWindows;
 
 namespace Atempt_5
 {
+    #region enumerations
     public enum GameState
     { GameInit = 0, Play = 1, Pause = 2, Menu = 3 }
 
@@ -29,11 +30,26 @@ namespace Atempt_5
      */
     public enum KeyEventStates
     { Up = 0, RisingEdge = 1, FallingEdge = 2, Down = 3 }
-    /// <summary>
+
+    #endregion
+
+
+    /// <summary> 
     /// This is the main type for your game
     /// </summary>
     public class GameCore : Game
     {
+        #region Global Variables
+        public Point WindowResilution
+        {
+            get { return new Point(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight); }
+            set
+            {
+                graphics.PreferredBackBufferWidth = value.X;
+                graphics.PreferredBackBufferHeight = value.Y;
+            }
+        }
+        public Random R;
         public GameState gameState;
         #region Keys
         private static int NextID = 0;                      //always has the next key to be made
@@ -67,12 +83,16 @@ namespace Atempt_5
         #endregion
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        #endregion
 
+
+        #region GameInit
         public GameCore()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+
+            Content.RootDirectory = GameSettings.ContentPath;
 
         }
 
@@ -82,24 +102,19 @@ namespace Atempt_5
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-
         protected override void Initialize()
         {
-
-            // TODO: Add your initialization logic here
             Console.WriteLine("Game Init");
             base.Initialize();
+            GameWindows = new Dictionary<GameState, GameWindow>();
+            R = new Random();
+            WindowResilution = GameSettings.DefaultResilution;
             gameState = GameState.Play;
             // graphics.IsFullScreen = true;
             PreviousState = Keyboard.GetState().GetPressedKeys();
             PlayWindowInint();
             PauseWindowInit();
             MenuWindowInit();
-
-
-
-
-
         }
 
         private void MenuWindowInit()
@@ -112,7 +127,7 @@ namespace Atempt_5
             GameState SustainVal = GameState.Pause;
             GameWindows[SustainVal] = new PauseWindow().setGameState(SustainVal);
             {
-                var MsgPause = new SpriteText(FontBank["Scratch"]).SetText("Pause").SetPos(new Vector2(Window.ClientBounds.Center.X,Window.ClientBounds.Center.Y)).SetOrigen();
+                var MsgPause = new SpriteText(FontBank["Scratch"]).SetText("Pause").SetPos(new Vector2(Window.ClientBounds.Center.X, Window.ClientBounds.Center.Y)).SetOrigen();
                 GameWindows[SustainVal].DrawableFont.Add("MsgPause", MsgPause);
             }
 
@@ -143,30 +158,22 @@ namespace Atempt_5
 
             }
         }
+        #endregion
+
+
+        #region Load Content
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        /// 
-        public Texture2D LoadTextureFromContent(string Path)
-        {
-            Console.WriteLine("loading " + Path);
-            return Content.Load<Texture2D>(Path);
-
-
-
-        }
+        ///   
         protected override void LoadContent()
         {
             Console.WriteLine("Game Loading");
-            // Create a new SpriteBatch, which can be used to draw textures.
-
-            GameWindows = new Dictionary<GameState, GameWindow>();
             TextureBank = new Dictionary<string, SpriteSheet>();
-
-
             FontBank = new Dictionary<string, SpriteFont>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             //////Image Textures
             #region Curser
             LoadTexture("Curser", 11, 1, "Curser");
@@ -209,10 +216,10 @@ namespace Atempt_5
             }
         }
 
+        #endregion
 
 
-
-
+        #region Unload
 
 
         /// <summary>
@@ -224,13 +231,10 @@ namespace Atempt_5
             // TODO: Unload any non ContentManager content here
             Console.WriteLine("unload");
         }
+        #endregion
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
 
+        #region Update
 
         public KeyEventStates CurrentKeyState(Keys K)
         {
@@ -245,19 +249,23 @@ namespace Atempt_5
 
 
 
-        Random R = new Random();
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             GameWindows[gameState].Update(gameTime, this);
-
-
-
-
             base.Update(gameTime);
             PreviousState = Keyboard.GetState().GetPressedKeys();
         }
 
 
+        #endregion
+
+
+        #region Draw
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -277,6 +285,7 @@ namespace Atempt_5
             base.Draw(gameTime);
         }
 
+        #endregion
 
     }
 }
