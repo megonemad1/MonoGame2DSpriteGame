@@ -9,7 +9,23 @@ namespace Atempt_5
 {
     public class SpriteTexture : IDrawable
     {
-  
+
+        Vector2 SpriteWH;
+        public Texture2D Texture;
+        public Microsoft.Xna.Framework.Vector2 position;
+        public Microsoft.Xna.Framework.Color hue;
+        public Microsoft.Xna.Framework.Rectangle? srcrectangle;
+        public float rotation;
+        public Microsoft.Xna.Framework.Vector2 origin;
+        public Vector2 Scale;
+        public float ScaleF
+        {
+            set { Scale = new Vector2(value, value); }
+        }
+        public SpriteEffects effect;
+        public int SpriteID;
+        public float Depth;
+
         public static Microsoft.Xna.Framework.Rectangle CreateRectangle(Vector2 Frame, Texture2D texture, Vector2 SpriteSheetSize)
         {
             int TH = texture.Height;
@@ -38,7 +54,7 @@ namespace Atempt_5
             if (Texture != null)
             {
 
-                SB.Draw(this.Texture, this.position, this.srcrectangle, this.hue, this.rotation, this.origin, this.scale, this.effect, this.Depth);
+                SB.Draw(this.Texture, this.position, this.srcrectangle, this.hue, this.rotation, this.origin, this.Scale, this.effect, this.Depth);
 
 
             }
@@ -49,7 +65,7 @@ namespace Atempt_5
                 Console.WriteLine("texture " + SpriteID + " is null");
 
             }
-            
+
         }
         public SpriteTexture(int SpriteID, Texture2D texture, Vector2 SpriteHW)
         {
@@ -60,7 +76,7 @@ namespace Atempt_5
             rotation = 0f;
             srcrectangle = null;
             origin = new Vector2(0, 0);
-            scale = 1f;
+            ScaleF = 1;
             effect = SpriteEffects.None;
             Texture = texture;
             this.SpriteWH = SpriteHW;
@@ -76,17 +92,6 @@ namespace Atempt_5
             return this;
         }
 
-        Vector2 SpriteWH;
-        public Texture2D Texture;
-        public Microsoft.Xna.Framework.Vector2 position;
-        public Microsoft.Xna.Framework.Color hue;
-        public Microsoft.Xna.Framework.Rectangle? srcrectangle;
-        public float rotation;
-        public Microsoft.Xna.Framework.Vector2 origin;
-        public float scale;
-        public SpriteEffects effect;
-        public int SpriteID;
-        public float Depth;
 
 
         internal SpriteTexture SetOrigenCenter()

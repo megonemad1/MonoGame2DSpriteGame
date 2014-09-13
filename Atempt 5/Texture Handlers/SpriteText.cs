@@ -8,21 +8,31 @@ using Microsoft.Xna.Framework;
 namespace Atempt_5
 {
   public class SpriteText:IDrawable
-    {
-        public SpriteFont font;
+  {
+
+      #region Variables
+      public SpriteFont font;
         public Vector2 position;
         public Color hue;
         public string DspText;
         public float rotation;
         public Vector2 origin;
-        public float scale;
         public SpriteEffects effect;
         public int SpriteID;
-        public float Depth;  
+        public float Depth;
+        public Vector2 Scale;
+        public float ScaleF
+        {
+            set
+            {
+                Scale = new Vector2(value, value);
+            }
+        }
 
+      #endregion
         public void Draw(SpriteBatch SB)
         {
-            SB.DrawString(font, DspText, position, hue, rotation, origin, scale, effect, Depth);
+            SB.DrawString(font, DspText, position, hue, rotation, origin, Scale , effect, Depth);
         }
       public  float TextHeight { get { return font.MeasureString(DspText).Y; } }
      public   float TextWidth { get { return font.MeasureString(DspText).X; } }
@@ -34,7 +44,7 @@ namespace Atempt_5
             hue = Color.White;
             rotation = 0f;
             origin = new Vector2(0, 0);
-            scale = 1f;
+            ScaleF = 1f;
             effect = SpriteEffects.None;
             this.Depth = 0.5f;
         }

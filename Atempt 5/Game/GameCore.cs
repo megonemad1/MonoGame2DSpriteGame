@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using System.IO;
+using System.Xml.Serialization;
 using Atempt_5.GameWindows;
 
 
@@ -42,7 +44,7 @@ namespace Atempt_5
         #region Global Variables
         public Point WindowResilution
         {
-            get { return new Point(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight); }
+            get { return new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height); }
             set
             {
                 graphics.PreferredBackBufferWidth = value.X;
@@ -83,6 +85,7 @@ namespace Atempt_5
         #endregion
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
         #endregion
 
 
@@ -108,13 +111,29 @@ namespace Atempt_5
             base.Initialize();
             GameWindows = new Dictionary<GameState, GameWindow>();
             R = new Random();
-            WindowResilution = GameSettings.DefaultResilution;
-            gameState = GameState.Play;
-            // graphics.IsFullScreen = true;
+         //   WindowResilution = new Point(400, 200);
+
+            
+            Window.ClientSizeChanged += Window_ClientSizeChanged;
+            Window.AllowUserResizing = true;
+            gameState = GameState.GameInit;
+
             PreviousState = Keyboard.GetState().GetPressedKeys();
             PlayWindowInint();
             PauseWindowInit();
             MenuWindowInit();
+            InitWindowInit();
+        }
+
+        void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            GameSettings.CurrentResolution = WindowResilution;
+            graphics.ApplyChanges();
+        }
+
+        private void InitWindowInit()
+        {
+            GameWindows[GameState.GameInit] = new GameIni().setGameState(GameState.GameInit);
         }
 
         private void MenuWindowInit()
@@ -127,7 +146,7 @@ namespace Atempt_5
             GameState SustainVal = GameState.Pause;
             GameWindows[SustainVal] = new PauseWindow().setGameState(SustainVal);
             {
-                var MsgPause = new SpriteText(FontBank["Scratch"]).SetText("Pause").SetPos(new Vector2(Window.ClientBounds.Center.X, Window.ClientBounds.Center.Y)).SetOrigen();
+                var MsgPause = new SpriteText(FontBank["Scratch"]).SetText("Pause").SetPos(new Vector2(GameSettings.VirtualResilution.X / 2, GameSettings.VirtualResilution.Y / 2)).SetOrigen();
                 GameWindows[SustainVal].DrawableFont.Add("MsgPause", MsgPause);
             }
 
@@ -140,6 +159,7 @@ namespace Atempt_5
                 GameWindows[SustainVal] = new PlayWindow().setGameState(SustainVal);
 
                 var ShipSprite = new SpriteTexture(GetNewKey(), TextureBank["ship"].texture, TextureBank["ship"].SpriteSheetSize).SetDefaultRectangle(new Vector2(0, 0)).SetOrigenCenter();
+                ShipSprite.position = new Vector2(30, 30);//GameSettings.VirtualResilution.X / 2,GameSettings.VirtualResilution.Y/2);
                 var shipName = new SpriteText(FontBank["Scratch"]);
                 shipName.Depth = 1f;
                 var Player1 = new Player1Ship(ShipSprite, shipName);
@@ -148,6 +168,7 @@ namespace Atempt_5
                 GameWindows[SustainVal].DrawableTextures.Add(Key, ShipSprite);
                 GameWindows[SustainVal].Updatable.Add(Key, Player1);
                 GameWindows[SustainVal].Colideable.Add(Key, Player1);
+
             }
 
             {
@@ -170,6 +191,34 @@ namespace Atempt_5
         protected override void LoadContent()
         {
             Console.WriteLine("Game Loading");
+
+            if (File.Exists("Settings.xml"))
+            {
+                FileStream FS= new FileStream("Settings.xml", FileMode.Open);;
+                try
+                {                   
+                    XmlSerializer XS = new XmlSerializer(typeof(GameSettings));
+                    GameSettings G = (GameSettings)XS.Deserialize(FS);
+                    GameSettings.SetInstanceToStatic(G);
+                    FS.Close();
+                    FS.Dispose();
+                }
+                catch (Exception e)
+                {
+                    FS.Close();
+                    FS.Dispose();
+                    Console.WriteLine(e.Message);
+                    GenSettingsFile();
+                }
+
+
+            }
+            else
+            {
+                GenSettingsFile();
+            }
+            graphics.IsFullScreen = GameSettings.IsFullscreen;
+
             TextureBank = new Dictionary<string, SpriteSheet>();
             FontBank = new Dictionary<string, SpriteFont>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -202,6 +251,18 @@ namespace Atempt_5
 
         }
 
+        private static void GenSettingsFile()
+        {
+            FileStream FS = new FileStream("Settings.xml", FileMode.Create);
+            XmlSerializer XS = new XmlSerializer(typeof(GameSettings));
+            GameSettings G = new GameSettings();
+            G._contentPath = "Content";
+            G._virtualResilution = new Point(1024, 768);
+            G._isFullscreen = false;
+            GameSettings.SetInstanceToStatic(G);
+            XS.Serialize(FS, G);
+        }
+
         private void LoadTexture(string Key, int x, int y, string textureName)
         {
             try
@@ -230,22 +291,27 @@ namespace Atempt_5
         {
             // TODO: Unload any non ContentManager content here
             Console.WriteLine("unload");
+            FileStream FS = new FileStream("Settings.xml", FileMode.Create);
+            XmlSerializer XS = new XmlSerializer(typeof(GameSettings));
+            GameSettings G = new GameSettings();
+            G._contentPath = GameSettings.ContentPath;
+            G._virtualResilution = GameSettings.VirtualResilution;
+            G._isFullscreen = GameSettings.IsFullscreen;        
+            XS.Serialize(FS, G);
         }
         #endregion
 
 
         #region Update
 
-        public KeyEventStates CurrentKeyState(Keys K)
-        {
-            int Rval = 0;
-            if (PreviousState.Contains(K))
-                Rval += 2;
-            if (Keyboard.GetState().IsKeyDown(K))
-                Rval += 1;
-            return (KeyEventStates)Rval;
-
-        }
+        /*   | Up | RE | DN | FE |
+     * -----------------------
+     * Ps| 00 | 00 | 02 | 02 |
+     * -----------------------
+     * Pc| 00 | 01 | 01 | 00 |
+     * =======================
+     * T | 00 | 01 | 03 | 02 |
+     */
 
 
 
@@ -256,9 +322,12 @@ namespace Atempt_5
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+
             GameWindows[gameState].Update(gameTime, this);
             base.Update(gameTime);
             PreviousState = Keyboard.GetState().GetPressedKeys();
+
         }
 
 
@@ -285,6 +354,28 @@ namespace Atempt_5
             base.Draw(gameTime);
         }
 
+        #endregion
+
+        #region functions
+        public KeyEventStates CurrentKeyState(Keys K)
+        {
+            int Rval = 0;
+            if (PreviousState.Contains(K))
+                Rval += 2;
+            if (Keyboard.GetState().IsKeyDown(K))
+                Rval += 1;
+            return (KeyEventStates)Rval;
+
+        }
+
+        public Vector2 CurentMousePos()
+        {
+            Vector3 v = new Vector3(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1) / GameSettings.ResolutionRescale;
+            return new Vector2(v.X, v.Y);
+
+        }
+        public Viewport GetViewport()
+        { return GraphicsDevice.Viewport; }
         #endregion
 
     }

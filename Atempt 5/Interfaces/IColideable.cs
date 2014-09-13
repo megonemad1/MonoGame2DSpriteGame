@@ -10,6 +10,9 @@ namespace Atempt_5
     {
         Vector2 Pos { get; }
         float Radius { get; }
+        float Rotation { get; }
+        Rectangle? BoundingBox { get; }
 
+        public void Colision(IColideable C);
     }
 }

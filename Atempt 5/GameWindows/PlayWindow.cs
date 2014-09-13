@@ -18,7 +18,7 @@ namespace Atempt_5.GameWindows
 
        public override bool Update(GameTime gameTime, GameCore game)
        { bool runthrough=  base.Update(gameTime, game);
-           Keyboard.GetState().GetPressedKeys();
+           
            
            if(game.CurrentKeyState(Keys.P)== KeyEventStates.RisingEdge)
            {
