@@ -13,6 +13,9 @@ namespace Atempt_5
         float Rotation { get; }
         Rectangle? BoundingBox { get; }
 
-        public void Colision(IColideable C);
+        bool IsColiding(IColideable a);
+
+
+        void Colision(IColideable C);
     }
 }

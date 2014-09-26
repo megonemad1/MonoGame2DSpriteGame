@@ -56,14 +56,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entitys\Curser.cs" />
+    <Compile Include="Entitys\otherShip.cs" />
     <Compile Include="GameWindows\GameWindow.cs" />
     <Compile Include="GameWindows\GameIni.cs" />
     <Compile Include="GameWindows\MenuWindow.cs" />
     <Compile Include="GameWindows\PauseWindow.cs" />
     <Compile Include="GameWindows\PlayWindow.cs" />
+    <Compile Include="Game\PrimitiveBatch.cs" />
     <Compile Include="Interfaces\IColideable.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
+    <Compile Include="Interfaces\IWeppon.cs" />
     <Compile Include="Lib\LibCollision.cs" />
     <Compile Include="Lib\LibTranslation.cs" />
     <Compile Include="Entitys\Ship.cs" />
@@ -104,6 +107,7 @@
     <Content Include="Content\Man.png" />
     <Content Include="Content\ship4_4.png" />
     <Content Include="Content\Credits.txt" />
+    <Content Include="Lib\Credits.txt" />
     <Content Include="Lib\ToDo.txt" />
     <Content Include="Game\Icon.ico" />
   </ItemGroup>

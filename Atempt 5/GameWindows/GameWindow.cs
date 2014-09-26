@@ -56,41 +56,42 @@ namespace Atempt_5
            foreach (KeyValuePair<string,IColideable> i in Colideable)
            {
                Vector2 key = Lib.LibCollision.GetBox(i.Value);
-               if (Boxes[key] != null)
+               if (Boxes.ContainsKey(key))
                {
                    Boxes[key].Add(i.Value);
                }
                else
                {
-                   Boxes[key] = new List<IColideable>();
+                   Boxes.Add(key, new List<IColideable>());
                    Boxes[key].Add(i.Value);
                }
               
            }
            foreach (KeyValuePair<Vector2,List<IColideable>> c in Boxes)
            {
-               Vector2 MidMid = c.Key;
-               Vector2 TopMid = MidMid + new Vector2(0, -1);
-               Vector2 TopRight = MidMid + new Vector2(1, -1);
-               Vector2 TopLeft = MidMid + new Vector2(-1, -1);
-               Vector2 MidRight = MidMid + new Vector2(1, 0);
-               Vector2 MidLeft = MidMid + new Vector2(-1, 0);
-               Vector2 BtmRight = MidMid + new Vector2(1, 1);
-               Vector2 BtmMid = MidMid + new Vector2(0, 1);
-               Vector2 BtmLeft = MidMid + new Vector2(-1, 1);
                List<IColideable> box = new List<IColideable>();
-               box.AddRange(Boxes[TopLeft]);
-               box.AddRange(Boxes[TopMid]);
-               box.AddRange(Boxes[TopRight]);
-               box.AddRange(Boxes[MidLeft]);
-               box.AddRange(Boxes[MidMid]);
-               box.AddRange(Boxes[MidRight]);
-               box.AddRange(Boxes[BtmLeft]);
-               box.AddRange(Boxes[BtmMid]);
-               box.AddRange(Boxes[BtmRight]);
+               
+               for (int i = 0; i < 3; i++)
+                   for (int j = 0; j < 3; j++)
+                   {
+                       Vector2 Temp = new Vector2(i - 1, j - 1);
+                       if(Boxes.ContainsKey(Temp))
+                       {
+                           box.AddRange(Boxes[Temp]);
+                       }
+                   }   
+              
                if (box.Count>1)
                {
-
+                   for (int i=0;i < box.Count;i++)
+                       for (int j=i+1;i<box.Count;j++)
+                       {
+                           if (box[i].IsColiding(box[j]) || box[j].IsColiding(box[i])) 
+                           {
+                               box[i].Colision(box[j]);
+                               box[j].Colision(box[i]);
+                           }
+                       }
                }
                
               

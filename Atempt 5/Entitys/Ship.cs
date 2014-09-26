@@ -117,11 +117,12 @@ namespace Atempt_5
 
         }
 
+       public bool IsColiding(IColideable a)
+        {
+            return Lib.LibCollision.CircleColiding(a, this);
+        }
 
         #endregion
-
-
-
 
     }
 }

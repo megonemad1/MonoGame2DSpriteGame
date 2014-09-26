@@ -85,7 +85,7 @@ namespace Atempt_5
         #endregion
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        PrimitiveBatch primitiveBatch;
         #endregion
 
 
@@ -111,9 +111,9 @@ namespace Atempt_5
             base.Initialize();
             GameWindows = new Dictionary<GameState, GameWindow>();
             R = new Random();
-         //   WindowResilution = new Point(400, 200);
+            //   WindowResilution = new Point(400, 200);
 
-            
+
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Window.AllowUserResizing = true;
             gameState = GameState.GameInit;
@@ -194,9 +194,9 @@ namespace Atempt_5
 
             if (File.Exists("Settings.xml"))
             {
-                FileStream FS= new FileStream("Settings.xml", FileMode.Open);;
+                FileStream FS = new FileStream("Settings.xml", FileMode.Open); ;
                 try
-                {                   
+                {
                     XmlSerializer XS = new XmlSerializer(typeof(GameSettings));
                     GameSettings G = (GameSettings)XS.Deserialize(FS);
                     GameSettings.SetInstanceToStatic(G);
@@ -222,6 +222,7 @@ namespace Atempt_5
             TextureBank = new Dictionary<string, SpriteSheet>();
             FontBank = new Dictionary<string, SpriteFont>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
             //////Image Textures
             #region Curser
@@ -296,7 +297,7 @@ namespace Atempt_5
             GameSettings G = new GameSettings();
             G._contentPath = GameSettings.ContentPath;
             G._virtualResilution = GameSettings.VirtualResilution;
-            G._isFullscreen = GameSettings.IsFullscreen;        
+            G._isFullscreen = GameSettings.IsFullscreen;
             XS.Serialize(FS, G);
         }
         #endregion
@@ -341,16 +342,17 @@ namespace Atempt_5
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
-            // TODO: Add your drawing code here
-
+          
+            //this handles the drawing of sprites
             GameWindows[gameState].Draw(spriteBatch);
-
-
-
+ //temp code so i can draw primitives to work out how to acheve somthing similar to the depth in the sprite batch
+            Matrix a = Matrix.Identity;
+            Matrix b = Matrix.Identity * 2;
+            primitiveBatch.Begin(ref a, ref b);
+            primitiveBatch.AddVertex(new Vector2(100, 100), Color.Red, PrimitiveType.LineList);
+            primitiveBatch.AddVertex(new Vector2(0, 0), Color.Red, PrimitiveType.LineList);
+            primitiveBatch.End();
             base.Draw(gameTime);
         }
 
